@@ -1,6 +1,6 @@
 # Temporary [![Build Status][travis-img]][travis-url]
 
-The library facilitate the creation of temporary files and directories.
+The library facilitates the creation of temporary files and directories.
 
 ## [Documentation][docs]
 
