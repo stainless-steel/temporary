@@ -1,0 +1,14 @@
+[package]
+name = "temporary"
+version = "0.0.1"
+authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/stainless-steel/temporary"
+homepage = "https://github.com/stainless-steel/temporary"
+documentation = "https://stainless-steel.github.io/temporary"
+description = """
+The library facilitate the creation of temporary files and directories.
+"""
+
+[dependencies]
+rand = "*"
