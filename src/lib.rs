@@ -44,7 +44,7 @@ impl Directory {
         Directory::new_in(&old_path_to_new!(env::temp_dir()), prefix)
     }
 
-    /// Create a temporary directory in a location specified by `root`. The
+    /// Create a temporary directory in the location specified by `root`. The
     /// directory will have a name starting from `prefix`, and it will be
     /// automatically removed when the object is destroyed.
     pub fn new_in(root: &Path, prefix: &str) -> Result<Directory> {
