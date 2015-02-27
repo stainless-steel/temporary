@@ -1,6 +1,6 @@
 //! Temporary files and directories.
 
-#![feature(env, fs, io, old_io, old_path, path)]
+#![feature(env, fs, io, path)]
 
 extern crate rand;
 
@@ -13,35 +13,13 @@ pub struct Directory {
     removed: bool,
 }
 
-macro_rules! old_path_to_new(
-    ($path:expr) => (
-        Path::new($path.as_str().unwrap())
-    );
-);
-
-macro_rules! old_error_to_new(
-    ($error:expr) => (
-        match $error {
-            Ok(result) => Ok(result),
-            Err(error) => Err(Error::new(
-                match error.kind {
-                    std::old_io::IoErrorKind::PathAlreadyExists => ErrorKind::PathAlreadyExists,
-                    _ => ErrorKind::Other,
-                },
-                error.desc,
-                error.detail,
-            )),
-        }
-    );
-);
-
 impl Directory {
     /// Create a temporary directory. The directory will have a name starting
     /// from `prefix`, and it will be automatically removed when the object is
     /// destroyed.
     #[inline]
     pub fn new(prefix: &str) -> Result<Directory> {
-        Directory::new_in(&old_path_to_new!(env::temp_dir()), prefix)
+        Directory::new_in(&env::temp_dir(), prefix)
     }
 
     /// Create a temporary directory in the location specified by `root`. The
@@ -54,8 +32,7 @@ impl Directory {
         const CHARS: usize = 12;
 
         if !root.is_absolute() {
-            let current = try!(old_error_to_new!(env::current_dir()));
-            let current = old_path_to_new!(current);
+            let current = try!(env::current_dir());
             return Directory::new_in(&current.join(root), prefix);
         }
 
