@@ -1,6 +1,5 @@
 //! Temporary files and directories.
 
-#![feature(io)]
 #![cfg_attr(test, feature(path_ext))]
 
 extern crate rand;
@@ -60,7 +59,7 @@ impl Directory {
             }
         }
 
-        Err(Error::new(ErrorKind::AlreadyExists, "failed to find a vacant name", None))
+        Err(Error::new(ErrorKind::AlreadyExists, "failed to find a vacant name"))
     }
 
     /// Return the path to the directory.
