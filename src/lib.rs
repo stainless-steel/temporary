@@ -1,7 +1,5 @@
 //! Temporary files and directories.
 
-#![cfg_attr(test, feature(path_ext))]
-
 extern crate rand;
 
 use std::{env, fs};
@@ -104,13 +102,13 @@ mod tests {
 
     #[test]
     fn new() {
-        use std::fs::PathExt;
+        use std::fs;
 
         let path = {
             let directory = Directory::new("foo").unwrap();
-            assert!(directory.path().exists());
+            assert!(fs::metadata(directory.path()).is_ok());
             directory.path().to_path_buf()
         };
-        assert!(!(&path).exists());
+        assert!(fs::metadata(path).is_err());
     }
 }
