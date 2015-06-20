@@ -1,4 +1,13 @@
 //! Temporary files and directories.
+//!
+//! ## Example
+//!
+//! ```rust
+//! use temporary::Directory;
+//!
+//! let directory = Directory::new("foo").unwrap();
+//! assert!(std::fs::metadata(directory).is_ok()); // Exists? Yes!
+//! ```
 
 extern crate rand;
 
@@ -94,6 +103,13 @@ impl Drop for Directory {
     #[inline]
     fn drop(&mut self) {
         let _ = self.cleanup();
+    }
+}
+
+impl AsRef<Path> for Directory {
+    #[inline]
+    fn as_ref(&self) -> &Path {
+        self.path()
     }
 }
 

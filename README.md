@@ -4,6 +4,15 @@ The library facilitates the creation of temporary files and directories.
 
 ## [Documentation][1]
 
+## Example
+
+```rust
+use temporary::Directory;
+
+let directory = Directory::new("foo").unwrap();
+assert!(std::fs::metadata(directory).is_ok()); // Exists? Yes!
+```
+
 ## Acknowledgments
 
 The package was originally based on `std::io::TempDir` by Rust’s developers,
