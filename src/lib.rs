@@ -17,21 +17,22 @@ impl Directory {
     /// destroyed.
     #[inline]
     pub fn new(prefix: &str) -> Result<Directory> {
-        Directory::new_in(&env::temp_dir(), prefix)
+        Directory::new_in(env::temp_dir(), prefix)
     }
 
     /// Create a temporary directory in the location specified by `root`. The
     /// directory will have a name starting from `prefix`, and it will be
     /// automatically removed when the object is destroyed.
-    pub fn new_in(root: &Path, prefix: &str) -> Result<Directory> {
+    pub fn new_in<T: AsRef<Path>>(root: T, prefix: &str) -> Result<Directory> {
         use rand::Rng;
 
         const RETRIES: u32 = 1 << 31;
         const CHARS: usize = 12;
 
+        let root = root.as_ref();
         if !root.is_absolute() {
             let current = try!(env::current_dir());
-            return Directory::new_in(&current.join(root), prefix);
+            return Directory::new_in(current.join(root), prefix);
         }
 
         let mut generator = rand::thread_rng();
