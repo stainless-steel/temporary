@@ -1,6 +1,6 @@
 # Temporary [![Build Status][status-img]][status-url]
 
-The library facilitates the creation of temporary files and directories.
+The package helps to create temporary files and directories.
 
 ## [Documentation][1]
 
