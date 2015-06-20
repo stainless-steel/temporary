@@ -15,22 +15,25 @@ use std::{env, fs};
 use std::io::{Error, ErrorKind, Result};
 use std::path::{Path, PathBuf};
 
+/// A temporary directory.
 pub struct Directory {
     path: PathBuf,
     removed: bool,
 }
 
 impl Directory {
-    /// Create a temporary directory. The directory will have a name starting
-    /// from `prefix`, and it will be automatically removed when the object is
-    /// destroyed.
+    /// Create a temporary directory.
+    ///
+    /// The directory will have a name starting from `prefix`, and it will be
+    /// automatically removed when the object is disposed.
     #[inline]
     pub fn new(prefix: &str) -> Result<Directory> {
         Directory::new_in(env::temp_dir(), prefix)
     }
 
-    /// Create a temporary directory in the location specified by `root`. The
-    /// directory will have a name starting from `prefix`, and it will be
+    /// Create a temporary directory in a specific directory.
+    ///
+    /// The directory will have a name starting from `prefix`, and it will be
     /// automatically removed when the object is destroyed.
     pub fn new_in<T: AsRef<Path>>(root: T, prefix: &str) -> Result<Directory> {
         use rand::Rng;
@@ -72,21 +75,22 @@ impl Directory {
 
     /// Return the path to the directory.
     #[inline]
-    pub fn path<'d>(&'d self) -> &'d Path {
-        &self.path
+    pub fn path(&self) -> &Path {
+        self.as_ref()
+    }
+
+    /// Return the path to the directory and dispose the object without removing
+    /// the actual directory.
+    #[inline]
+    pub fn into_path(mut self) -> PathBuf {
+        self.removed = true;
+        self.path.clone()
     }
 
     /// Remove the directory.
     #[inline]
     pub fn remove(mut self) -> Result<()> {
         self.cleanup()
-    }
-
-    /// Dispose the object without removing the actual directory.
-    #[inline]
-    pub fn unwrap(mut self) -> Result<()> {
-        self.removed = true;
-        Ok(())
     }
 
     fn cleanup(&mut self) -> Result<()> {
@@ -100,16 +104,17 @@ impl Directory {
 }
 
 impl Drop for Directory {
+    #[allow(unused_must_use)]
     #[inline]
     fn drop(&mut self) {
-        let _ = self.cleanup();
+        self.cleanup();
     }
 }
 
 impl AsRef<Path> for Directory {
     #[inline]
     fn as_ref(&self) -> &Path {
-        self.path()
+        &self.path
     }
 }
 
