@@ -1,8 +1,8 @@
-# Temporary [![Build Status][status-img]][status-url]
+# Temporary [![Version][version-img]][version-url] [![Status][status-img]][status-url]
 
 The package helps to create temporary files and directories.
 
-## [Documentation][1]
+## [Documentation][docs]
 
 ## Example
 
@@ -25,7 +25,8 @@ which was later moved to a separate crate,
 2. Implement your idea.
 3. Open a pull request.
 
-[1]: https://stainless-steel.github.io/temporary
-
+[version-img]: https://img.shields.io/crates/v/temporary.svg
+[version-url]: https://crates.io/crates/temporary
 [status-img]: https://travis-ci.org/stainless-steel/temporary.svg?branch=master
 [status-url]: https://travis-ci.org/stainless-steel/temporary
+[docs]: https://stainless-steel.github.io/temporary
