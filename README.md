@@ -18,7 +18,7 @@ let root = Directory::new("foo").unwrap();
 let mut file = File::create(root.join("foo.txt")).unwrap();
 file.write_all(b"Hello, there!").unwrap();
 
-// The directory and its content get disposed automatically.
+// The directory and its content get removed automatically.
 ```
 
 ## Acknowledgments
