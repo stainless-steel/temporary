@@ -3,10 +3,18 @@
 //! ## Example
 //!
 //! ```rust
+//! use std::fs::File;
+//! use std::io::Write;
 //! use temporary::Directory;
 //!
-//! let directory = Directory::new("foo").unwrap();
-//! assert!(std::fs::metadata(&directory).is_ok()); // Exists? Yes!
+//! // Create a temporary directory.
+//! let root = Directory::new("foo").unwrap();
+//!
+//! // Do some work.
+//! let mut file = File::create(root.join("foo.txt")).unwrap();
+//! file.write_all(b"Hello, there!").unwrap();
+//!
+//! // The directory and its content get disposed automatically.
 //! ```
 
 use std::io::{Error, ErrorKind, Result};
