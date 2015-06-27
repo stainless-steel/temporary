@@ -6,7 +6,7 @@
 //! use temporary::Directory;
 //!
 //! let directory = Directory::new("foo").unwrap();
-//! assert!(std::fs::metadata(directory).is_ok()); // Exists? Yes!
+//! assert!(std::fs::metadata(&directory).is_ok()); // Exists? Yes!
 //! ```
 
 use std::io::{Error, ErrorKind, Result};

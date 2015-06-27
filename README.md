@@ -10,7 +10,7 @@ The package helps to create temporary files and directories.
 use temporary::Directory;
 
 let directory = Directory::new("foo").unwrap();
-assert!(std::fs::metadata(directory).is_ok()); // Exists? Yes!
+assert!(std::fs::metadata(&directory).is_ok()); // Exists? Yes!
 ```
 
 ## Acknowledgments
