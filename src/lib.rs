@@ -9,8 +9,6 @@
 //! assert!(std::fs::metadata(directory).is_ok()); // Exists? Yes!
 //! ```
 
-extern crate rand;
-
 use std::io::{Error, ErrorKind, Result};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
@@ -37,8 +35,6 @@ impl Directory {
     /// The directory will have a name starting from `prefix`, and it will be
     /// automatically removed when the object is destroyed.
     pub fn new_in<T: AsRef<Path>>(root: T, prefix: &str) -> Result<Directory> {
-        use rand::Rng;
-
         const RETRIES: u32 = 1 << 31;
         const CHARS: usize = 12;
 
@@ -48,10 +44,9 @@ impl Directory {
             return Directory::new_in(current.join(root), prefix);
         }
 
-        let mut generator = rand::thread_rng();
-
+        let mut state = random_state(root, prefix);
         for _ in 0..RETRIES {
-            let suffix: String = generator.gen_ascii_chars().take(CHARS).collect();
+            let suffix: String = random_string(CHARS, &mut state);
 
             let path = if prefix.is_empty() {
                 root.join(&suffix)
@@ -126,6 +121,28 @@ impl Drop for Directory {
     fn drop(&mut self) {
         self.cleanup();
     }
+}
+
+fn random_state(_: &Path, _: &str) -> [u64; 2] {
+    unsafe { std::mem::uninitialized() }
+}
+
+fn random_string(length: usize, state: &mut [u64; 2]) -> String {
+    unsafe { String::from_utf8_unchecked((0..length).map(|_| random_letter(state)).collect()) }
+}
+
+// https://en.wikipedia.org/wiki/Xorshift#Xorshift.2B
+fn random_letter(state: &mut [u64; 2]) -> u8 {
+    let (mut x, y) = (state[0], state[1]);
+    let number = {
+        state[0] = y;
+        x = x ^ (x << 23);
+        x = x ^ (x >> 17);
+        x = x ^ y ^ (y >> 26);
+        state[1] = x;
+        x.wrapping_add(y)
+    };
+    b'a' + (number % 26) as u8
 }
 
 #[cfg(test)]

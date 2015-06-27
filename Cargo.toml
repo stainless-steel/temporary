@@ -7,6 +7,3 @@ repository = "https://github.com/stainless-steel/temporary"
 homepage = "https://github.com/stainless-steel/temporary"
 documentation = "https://stainless-steel.github.io/temporary"
 description = "The package helps to create temporary files and directories."
-
-[dependencies]
-rand = "*"
