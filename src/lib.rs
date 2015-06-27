@@ -124,7 +124,8 @@ impl Drop for Directory {
 }
 
 fn random_state(_: &Path, _: &str) -> [u64; 2] {
-    unsafe { std::mem::uninitialized() }
+    use std::mem::uninitialized as rand;
+    unsafe { [rand::<u64>() ^ 0x12345678, rand::<u64>() ^ 0x87654321] }
 }
 
 fn random_string(length: usize, state: &mut [u64; 2]) -> String {
