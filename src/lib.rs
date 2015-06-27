@@ -11,9 +11,10 @@
 
 extern crate rand;
 
-use std::{env, fs};
 use std::io::{Error, ErrorKind, Result};
+use std::ops::Deref;
 use std::path::{Path, PathBuf};
+use std::{env, fs};
 
 /// A temporary directory.
 pub struct Directory {
@@ -103,6 +104,22 @@ impl Directory {
     }
 }
 
+impl AsRef<Path> for Directory {
+    #[inline]
+    fn as_ref(&self) -> &Path {
+        &self.path
+    }
+}
+
+impl Deref for Directory {
+    type Target = Path;
+
+    #[inline]
+    fn deref(&self) -> &Path {
+        &self.path
+    }
+}
+
 impl Drop for Directory {
     #[allow(unused_must_use)]
     #[inline]
@@ -111,15 +128,9 @@ impl Drop for Directory {
     }
 }
 
-impl AsRef<Path> for Directory {
-    #[inline]
-    fn as_ref(&self) -> &Path {
-        &self.path
-    }
-}
-
 #[cfg(test)]
 mod tests {
+    use std::path::Path;
     use super::Directory;
 
     #[test]
@@ -132,5 +143,14 @@ mod tests {
             directory.path().to_path_buf()
         };
         assert!(fs::metadata(path).is_err());
+    }
+
+    #[test]
+    fn deref() {
+        let directory = Directory::new("bar").unwrap();
+        work(&directory);
+
+        fn work(_: &Path) {
+        }
     }
 }
