@@ -32,7 +32,7 @@ impl Directory {
     /// Create a temporary directory.
     ///
     /// The directory will have a name starting from `prefix`, and it will be
-    /// automatically removed when the object is disposed.
+    /// automatically disposed when the object goes out of scope.
     #[inline]
     pub fn new(prefix: &str) -> Result<Directory> {
         Directory::new_in(env::temp_dir(), prefix)
@@ -41,7 +41,7 @@ impl Directory {
     /// Create a temporary directory in a specific directory.
     ///
     /// The directory will have a name starting from `prefix`, and it will be
-    /// automatically removed when the object is destroyed.
+    /// automatically disposed when the object goes out of scope.
     pub fn new_in<T: AsRef<Path>>(root: T, prefix: &str) -> Result<Directory> {
         const RETRIES: u32 = 1 << 31;
         const CHARS: usize = 12;
