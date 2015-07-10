@@ -1,6 +1,6 @@
 # Temporary [![Version][version-img]][version-url] [![Status][status-img]][status-url]
 
-The package helps to create temporary files and directories.
+The package provides means of managing temporary files and directories.
 
 ## [Documentation][docs]
 
