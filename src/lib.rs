@@ -8,10 +8,10 @@
 //! use temporary::Directory;
 //!
 //! // Create a temporary directory.
-//! let root = Directory::new("foo").unwrap();
+//! let directory = Directory::new("foo").unwrap();
 //!
 //! // Do some work.
-//! let mut file = File::create(root.join("foo.txt")).unwrap();
+//! let mut file = File::create(directory.join("foo.txt")).unwrap();
 //! file.write_all(b"Hello, there!").unwrap();
 //!
 //! // The directory and its content get removed automatically.
@@ -38,31 +38,31 @@ impl Directory {
     /// automatically removed when the object goes out of scope.
     #[inline]
     pub fn new(prefix: &str) -> Result<Directory> {
-        Directory::with_root(env::temp_dir(), prefix)
+        Directory::with_parent(env::temp_dir(), prefix)
     }
 
     /// Create a temporary directory in a specific directory.
     ///
     /// The directory will have a name starting from `prefix`, and it will be
     /// automatically removed when the object goes out of scope.
-    pub fn with_root<T: AsRef<Path>>(root: T, prefix: &str) -> Result<Directory> {
+    pub fn with_parent<T: AsRef<Path>>(parent: T, prefix: &str) -> Result<Directory> {
         const RETRIES: u32 = 1 << 31;
         const CHARS: usize = 12;
 
-        let root = root.as_ref();
-        if !root.is_absolute() {
+        let parent = parent.as_ref();
+        if !parent.is_absolute() {
             let current = try!(env::current_dir());
-            return Directory::with_root(current.join(root), prefix);
+            return Directory::with_parent(current.join(parent), prefix);
         }
 
-        let mut source = random::default().seed(random_seed(root, prefix));
+        let mut source = random::default().seed(random_seed(parent, prefix));
         for _ in 0..RETRIES {
             let suffix: String = random_string(CHARS, &mut source);
 
             let path = if prefix.is_empty() {
-                root.join(&suffix)
+                parent.join(&suffix)
             } else {
-                root.join(&format!("{}.{}", prefix, suffix))
+                parent.join(&format!("{}.{}", prefix, suffix))
             };
 
             match fs::create_dir(&path) {
