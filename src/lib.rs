@@ -17,6 +17,9 @@
 //! // The directory and its content get removed automatically.
 //! ```
 
+extern crate random;
+
+use random::Source;
 use std::io::{Error, ErrorKind, Result};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
@@ -52,9 +55,9 @@ impl Directory {
             return Directory::with_root(current.join(root), prefix);
         }
 
-        let mut state = random_state(root, prefix);
+        let mut source = random::default().seed(random_seed(root, prefix));
         for _ in 0..RETRIES {
-            let suffix: String = random_string(CHARS, &mut state);
+            let suffix: String = random_string(CHARS, &mut source);
 
             let path = if prefix.is_empty() {
                 root.join(&suffix)
@@ -131,27 +134,17 @@ impl Drop for Directory {
     }
 }
 
-fn random_state(_: &Path, _: &str) -> [u64; 2] {
+fn random_seed(_: &Path, _: &str) -> [u64; 2] {
     use std::mem::uninitialized as rand;
     unsafe { [rand::<u64>() ^ 0x12345678, rand::<u64>() ^ 0x87654321] }
 }
 
-fn random_string(length: usize, state: &mut [u64; 2]) -> String {
-    unsafe { String::from_utf8_unchecked((0..length).map(|_| random_letter(state)).collect()) }
+fn random_string<S: Source>(length: usize, source: &mut S) -> String {
+    unsafe { String::from_utf8_unchecked((0..length).map(|_| random_letter(source)).collect()) }
 }
 
-// https://en.wikipedia.org/wiki/Xorshift#Xorshift.2B
-fn random_letter(state: &mut [u64; 2]) -> u8 {
-    let (mut x, y) = (state[0], state[1]);
-    let number = {
-        state[0] = y;
-        x = x ^ (x << 23);
-        x = x ^ (x >> 17);
-        x = x ^ y ^ (y >> 26);
-        state[1] = x;
-        x.wrapping_add(y)
-    };
-    b'a' + (number % 26) as u8
+fn random_letter<S: Source>(source: &mut S) -> u8 {
+    b'a' + (source.read::<u64>() % 26) as u8
 }
 
 #[cfg(test)]
