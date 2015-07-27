@@ -23,7 +23,7 @@ use random::Source;
 use std::io::{Error, ErrorKind, Result};
 use std::ops::Deref;
 use std::path::{Path, PathBuf};
-use std::{env, fs};
+use std::{env, fmt, fs};
 
 /// A temporary directory.
 pub struct Directory {
@@ -114,6 +114,12 @@ impl AsRef<Path> for Directory {
     #[inline]
     fn as_ref(&self) -> &Path {
         &self.path
+    }
+}
+
+impl fmt::Debug for Directory {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        self.path.fmt(formatter)
     }
 }
 
