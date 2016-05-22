@@ -10,4 +10,4 @@ description = """
 The package provides means of managing temporary files and directories."""
 
 [dependencies]
-random = "0.9"
+random = "0.10"
