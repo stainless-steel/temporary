@@ -1,13 +1,13 @@
 [package]
 name = "temporary"
-version = "0.5.1"
+version = "0.6.0"
+license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
-license = "MIT"
-repository = "https://github.com/stainless-steel/temporary"
-homepage = "https://github.com/stainless-steel/temporary"
-documentation = "https://stainless-steel.github.io/temporary"
 description = """
 The package provides means of managing temporary files and directories."""
+documentation = "https://stainless-steel.github.io/temporary"
+homepage = "https://github.com/stainless-steel/temporary"
+repository = "https://github.com/stainless-steel/temporary"
 
 [dependencies]
 random = "0.10"

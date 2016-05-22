@@ -2,7 +2,7 @@
 
 The package provides means of managing temporary files and directories.
 
-## [Documentation][docs]
+## [Documentation][doc]
 
 ## Example
 
@@ -29,12 +29,12 @@ which was later moved to a separate crate,
 
 ## Contribution
 
-1. Fork the project.
-2. Implement your idea.
-3. Open a pull request.
+Your contribution is highly appreciated. Do not hesitate to open an issue or a
+pull request. Note that any contribution submitted for inclusion in the project
+will be licensed according to the terms given in [LICENSE.md](LICENSE.md).
 
-[version-img]: https://img.shields.io/crates/v/temporary.svg
-[version-url]: https://crates.io/crates/temporary
+[doc]: https://stainless-steel.github.io/temporary
 [status-img]: https://travis-ci.org/stainless-steel/temporary.svg?branch=master
 [status-url]: https://travis-ci.org/stainless-steel/temporary
-[docs]: https://stainless-steel.github.io/temporary
+[version-img]: https://img.shields.io/crates/v/temporary.svg
+[version-url]: https://crates.io/crates/temporary
