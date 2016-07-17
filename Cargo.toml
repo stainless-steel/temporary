@@ -1,6 +1,6 @@
 [package]
 name = "temporary"
-version = "0.6.1"
+version = "0.6.2"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 description = """
@@ -10,4 +10,4 @@ homepage = "https://github.com/stainless-steel/temporary"
 repository = "https://github.com/stainless-steel/temporary"
 
 [dependencies]
-random = "0.11"
+random = "0.12"
