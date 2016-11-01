@@ -1,11 +1,11 @@
 [package]
 name = "temporary"
-version = "0.6.2"
+version = "0.6.3"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 description = """
 The package provides means of managing temporary files and directories."""
-documentation = "https://stainless-steel.github.io/temporary"
+documentation = "https://docs.rs/temporary"
 homepage = "https://github.com/stainless-steel/temporary"
 repository = "https://github.com/stainless-steel/temporary"
 
