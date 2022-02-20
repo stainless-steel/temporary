@@ -14,7 +14,7 @@ let directory = Directory::new("foo").unwrap();
 
 // Do some work.
 let mut file = File::create(directory.join("foo.txt")).unwrap();
-file.write_all(b"Hello, there!").unwrap();
+file.write_all(b"Hi there!").unwrap();
 
 // The directory and its content get removed automatically.
 ```
