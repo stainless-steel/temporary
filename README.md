@@ -1,4 +1,4 @@
-# Temporary [![Version][version-img]][version-url] [![Status][status-img]][status-url]
+# Temporary [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url] [![Build][build-img]][build-url]
 
 The package provides means of managing temporary files and directories.
 
@@ -33,8 +33,9 @@ Your contribution is highly appreciated. Do not hesitate to open an issue or a
 pull request. Note that any contribution submitted for inclusion in the project
 will be licensed according to the terms given in [LICENSE.md](LICENSE.md).
 
-[documentation]: https://docs.rs/temporary
-[status-img]: https://travis-ci.org/stainless-steel/temporary.svg?branch=master
-[status-url]: https://travis-ci.org/stainless-steel/temporary
-[version-img]: https://img.shields.io/crates/v/temporary.svg
-[version-url]: https://crates.io/crates/temporary
+[build-img]: https://github.com/stainless-steel/temporary/workflows/build/badge.svg
+[build-url]: https://github.com/stainless-steel/temporary/actions/workflows/build.yml
+[documentation-img]: https://docs.rs/temporary/badge.svg
+[documentation-url]: https://docs.rs/temporary
+[package-img]: https://img.shields.io/crates/v/temporary.svg
+[package-url]: https://crates.io/crates/temporary
