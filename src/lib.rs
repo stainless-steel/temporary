@@ -145,9 +145,9 @@ impl Drop for Directory {
     }
 }
 
-fn random_seed(_: &Path, _: &str) -> [u64; 2] {
-    use std::mem::uninitialized as rand;
-    unsafe { [rand::<u64>() ^ 0x12345678, rand::<u64>() ^ 0x87654321] }
+fn random_seed(_: &Path, prefix: &str) -> [u64; 2] {
+    let seed: u64 = prefix.as_bytes().iter().map(|&c| c as u64).sum();
+    [seed ^ 0x12345678, seed ^ 0x87654321]
 }
 
 fn random_string<S: Source>(length: usize, source: &mut S) -> String {
