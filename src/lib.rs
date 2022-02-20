@@ -51,7 +51,7 @@ impl Directory {
 
         let parent = parent.as_ref();
         if !parent.is_absolute() {
-            let current = try!(env::current_dir());
+            let current = env::current_dir()?;
             return Directory::with_parent(current.join(parent), prefix);
         }
 
