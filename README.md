@@ -2,8 +2,6 @@
 
 The package provides means of managing temporary files and directories.
 
-## [Documentation][documentation]
-
 ## Example
 
 ```rust
