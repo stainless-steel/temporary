@@ -66,18 +66,23 @@ impl Directory {
             };
 
             match fs::create_dir(&path) {
-                Ok(_) => return Ok(Directory {
-                    path: path.to_path_buf(),
-                    removed: false,
-                }),
+                Ok(_) => {
+                    return Ok(Directory {
+                        path: path.to_path_buf(),
+                        removed: false,
+                    })
+                }
                 Err(error) => match error.kind() {
-                    ErrorKind::AlreadyExists => {},
+                    ErrorKind::AlreadyExists => {}
                     _ => return Err(error),
                 },
             }
         }
 
-        Err(Error::new(ErrorKind::AlreadyExists, "failed to find a vacant name"))
+        Err(Error::new(
+            ErrorKind::AlreadyExists,
+            "failed to find a vacant name",
+        ))
     }
 
     /// Return the path to the directory.
@@ -155,8 +160,8 @@ fn random_letter<S: Source>(source: &mut S) -> u8 {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
     use super::Directory;
+    use std::path::Path;
 
     #[test]
     fn new() {
@@ -175,7 +180,6 @@ mod tests {
         let directory = Directory::new("bar").unwrap();
         work(&directory);
 
-        fn work(_: &Path) {
-        }
+        fn work(_: &Path) {}
     }
 }
