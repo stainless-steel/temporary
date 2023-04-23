@@ -17,8 +17,6 @@
 //! // The directory and its content get removed automatically.
 //! ```
 
-extern crate random;
-
 use random::Source;
 use std::io::{Error, ErrorKind, Result};
 use std::ops::Deref;
@@ -55,7 +53,7 @@ impl Directory {
             return Directory::with_parent(current.join(parent), prefix);
         }
 
-        let mut source = random::default().seed(random_seed(parent, prefix));
+        let mut source = random::default(random_seed(parent, prefix));
         for _ in 0..RETRIES {
             let suffix: String = random_string(CHARS, &mut source);
 
@@ -68,7 +66,7 @@ impl Directory {
             match fs::create_dir(&path) {
                 Ok(_) => {
                     return Ok(Directory {
-                        path: path.to_path_buf(),
+                        path,
                         removed: false,
                     })
                 }
@@ -145,9 +143,8 @@ impl Drop for Directory {
     }
 }
 
-fn random_seed(_: &Path, prefix: &str) -> [u64; 2] {
-    let seed: u64 = prefix.as_bytes().iter().map(|&c| c as u64).sum();
-    [seed ^ 0x12345678, seed ^ 0x87654321]
+fn random_seed(_: &Path, prefix: &str) -> u64 {
+    prefix.as_bytes().iter().map(|&c| c as u64).sum::<u64>() ^ 0x12345678
 }
 
 fn random_string<S: Source>(length: usize, source: &mut S) -> String {
