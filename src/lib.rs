@@ -1,20 +1,20 @@
-//! Temporary files and directories.
+//! Temporary files and folders.
 //!
 //! ## Example
 //!
 //! ```rust
 //! use std::fs::File;
 //! use std::io::Write;
-//! use temporary::Directory;
+//! use temporary::Folder;
 //!
-//! // Create a temporary directory.
-//! let directory = Directory::new("foo").unwrap();
+//! // Create a temporary folder.
+//! let folder = Folder::new("foo").unwrap();
 //!
 //! // Do some work.
-//! let mut file = File::create(directory.join("foo.txt")).unwrap();
+//! let mut file = File::create(folder.join("foo.txt")).unwrap();
 //! file.write_all(b"Hi there!").unwrap();
 //!
-//! // The directory and its content get removed automatically.
+//! // The folder and its content get removed automatically.
 //! ```
 
 use random::Source;
@@ -23,34 +23,34 @@ use std::ops::Deref;
 use std::path::{Path, PathBuf};
 use std::{env, fmt, fs};
 
-/// A temporary directory.
-pub struct Directory {
+/// A temporary folder.
+pub struct Folder {
     path: PathBuf,
     removed: bool,
 }
 
-impl Directory {
-    /// Create a temporary directory.
+impl Folder {
+    /// Create a temporary folder.
     ///
-    /// The directory will have a name starting from `prefix`, and it will be
+    /// The folder will have a name starting from `prefix`, and it will be
     /// automatically removed when the object goes out of scope.
     #[inline]
-    pub fn new(prefix: &str) -> Result<Directory> {
-        Directory::with_parent(env::temp_dir(), prefix)
+    pub fn new(prefix: &str) -> Result<Folder> {
+        Folder::with_parent(env::temp_dir(), prefix)
     }
 
-    /// Create a temporary directory in a specific directory.
+    /// Create a temporary folder in a specific folder.
     ///
-    /// The directory will have a name starting from `prefix`, and it will be
+    /// The folder will have a name starting from `prefix`, and it will be
     /// automatically removed when the object goes out of scope.
-    pub fn with_parent<T: AsRef<Path>>(parent: T, prefix: &str) -> Result<Directory> {
+    pub fn with_parent<T: AsRef<Path>>(parent: T, prefix: &str) -> Result<Folder> {
         const RETRIES: u32 = 1 << 31;
         const CHARS: usize = 12;
 
         let parent = parent.as_ref();
         if !parent.is_absolute() {
             let current = env::current_dir()?;
-            return Directory::with_parent(current.join(parent), prefix);
+            return Folder::with_parent(current.join(parent), prefix);
         }
 
         let mut source = random::default(random_seed(parent, prefix));
@@ -65,7 +65,7 @@ impl Directory {
 
             match fs::create_dir(&path) {
                 Ok(_) => {
-                    return Ok(Directory {
+                    return Ok(Folder {
                         path,
                         removed: false,
                     })
@@ -83,21 +83,21 @@ impl Directory {
         ))
     }
 
-    /// Return the path to the directory.
+    /// Return the path to the folder.
     #[inline]
     pub fn path(&self) -> &Path {
         self.as_ref()
     }
 
-    /// Return the path to the directory and dispose the object without removing
-    /// the actual directory.
+    /// Return the path to the folder and dispose the object without removing
+    /// the actual folder.
     #[inline]
     pub fn into_path(mut self) -> PathBuf {
         self.removed = true;
         self.path.clone()
     }
 
-    /// Remove the directory.
+    /// Remove the folder.
     #[inline]
     pub fn remove(mut self) -> Result<()> {
         self.cleanup()
@@ -113,20 +113,20 @@ impl Directory {
     }
 }
 
-impl AsRef<Path> for Directory {
+impl AsRef<Path> for Folder {
     #[inline]
     fn as_ref(&self) -> &Path {
         &self.path
     }
 }
 
-impl fmt::Debug for Directory {
+impl fmt::Debug for Folder {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         self.path.fmt(formatter)
     }
 }
 
-impl Deref for Directory {
+impl Deref for Folder {
     type Target = Path;
 
     #[inline]
@@ -135,7 +135,7 @@ impl Deref for Directory {
     }
 }
 
-impl Drop for Directory {
+impl Drop for Folder {
     #[allow(unused_must_use)]
     #[inline]
     fn drop(&mut self) {
@@ -157,7 +157,7 @@ fn random_letter<S: Source>(source: &mut S) -> u8 {
 
 #[cfg(test)]
 mod tests {
-    use super::Directory;
+    use super::Folder;
     use std::path::Path;
 
     #[test]
@@ -165,17 +165,17 @@ mod tests {
         use std::fs;
 
         let path = {
-            let directory = Directory::new("foo").unwrap();
-            assert!(fs::metadata(directory.path()).is_ok());
-            directory.path().to_path_buf()
+            let folder = Folder::new("foo").unwrap();
+            assert!(fs::metadata(folder.path()).is_ok());
+            folder.path().to_path_buf()
         };
         assert!(fs::metadata(path).is_err());
     }
 
     #[test]
     fn deref() {
-        let directory = Directory::new("bar").unwrap();
-        work(&directory);
+        let folder = Folder::new("bar").unwrap();
+        work(&folder);
 
         fn work(_: &Path) {}
     }

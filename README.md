@@ -1,22 +1,22 @@
 # Temporary [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url] [![Build][build-img]][build-url]
 
-The package provides means of managing temporary files and directories.
+The package provides means of managing temporary files and folders.
 
 ## Example
 
 ```rust
 use std::fs::File;
 use std::io::Write;
-use temporary::Directory;
+use temporary::Folder;
 
-// Create a temporary directory.
-let directory = Directory::new("foo").unwrap();
+// Create a temporary folder.
+let folder = Folder::new("foo").unwrap();
 
 // Do some work.
-let mut file = File::create(directory.join("foo.txt")).unwrap();
+let mut file = File::create(folder.join("foo.txt")).unwrap();
 file.write_all(b"Hi there!").unwrap();
 
-// The directory and its content get removed automatically.
+// The folder and its content get removed automatically.
 ```
 
 ## Acknowledgments

@@ -5,7 +5,7 @@ edition = "2021"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 description = """
-The package provides means of managing temporary files and directories."""
+The package provides means of managing temporary files and folders."""
 documentation = "https://docs.rs/temporary"
 homepage = "https://github.com/stainless-steel/temporary"
 repository = "https://github.com/stainless-steel/temporary"
